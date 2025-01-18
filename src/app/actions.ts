@@ -54,6 +54,7 @@ export async function summarizeStockData({ stockSymbols }: { stockSymbols: strin
           content: data,
         },
       ],
+      temperature: 0.5,
     });
 
     const messageContent = response.choices[0].message.content;
