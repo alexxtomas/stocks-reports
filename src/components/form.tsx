@@ -2,7 +2,8 @@
 
 import { summarizeStockData } from '@/app/actions';
 import { PlusCircle } from 'lucide-react';
-import { useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
+import Markdown from 'react-markdown';
 
 export const Form = () => {
   const [currStockSymbol, setCurrStockSymbol] = useState<string>('');
@@ -10,6 +11,30 @@ export const Form = () => {
   const [summary, setSummary] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setSummary(
+      `
+## NVDA
+
+**Order**  
+Place a limit order at \$132 with a stop at \$130 and a take profit at \$134, using **50%** of your capital.
+
+**Reason**  
+There is substantial liquidity around \$132, and the stock is currently trending upwards, making it an opportune moment to buy.
+
+---
+
+## AAPL
+
+**Order**  
+Place a sell order at \$235 with a stop at \$240 and a take profit at \$225, using **20%** of your capital.
+
+**Reason**  
+We enter a short position at \$235, taking advantage of a resistance level where the price tends to pull back. We set the stop at \$240 to exit if the bearish thesis is invalidated. We aim to take profits at \$225, where we expect support to halt the price drop. We only allocate 20% of our capital to keep risk under control.
+      `,
+    );
+  }, []);
 
   const areSymbolsEmpty = stockSymbols.length === 0;
 
@@ -60,12 +85,10 @@ export const Form = () => {
       {!isPending && summary ? (
         <section className="flex flex-col items-center max-w-md space-y-4 mt-4">
           <h3 className="text-xl text-center font-normal">
-            Report generated from the data of the following actions:{' '}
+            Buy and Sell opportunities for:{' '}
             <span className="font-semibold">{stockSymbols.join(', ')} </span>
           </h3>
-          <p className="text-center text-lg border p-4 rounded-lg bg-zinc-100 max-h-96 overflow-y-auto">
-            {summary}
-          </p>
+          <Markdown className={'prose max-h-[500px] overflow-y-scroll'}>{summary}</Markdown>
           <button
             onClick={handleResetSummary}
             className="px-8 py-2  rounded-lg border bg-blue-400 hover:bg-blue-500 transition-colors text-lg font-semibold"
