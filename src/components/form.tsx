@@ -2,7 +2,7 @@
 
 import { summarizeStockData } from '@/app/actions';
 import { PlusCircle } from 'lucide-react';
-import { useEffect, useState, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import Markdown from 'react-markdown';
 
 export const Form = () => {
@@ -11,30 +11,6 @@ export const Form = () => {
   const [summary, setSummary] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    setSummary(
-      `
-## NVDA
-
-**Order**  
-Place a limit order at \$132 with a stop at \$130 and a take profit at \$134, using **50%** of your capital.
-
-**Reason**  
-There is substantial liquidity around \$132, and the stock is currently trending upwards, making it an opportune moment to buy.
-
----
-
-## AAPL
-
-**Order**  
-Place a sell order at \$235 with a stop at \$240 and a take profit at \$225, using **20%** of your capital.
-
-**Reason**  
-We enter a short position at \$235, taking advantage of a resistance level where the price tends to pull back. We set the stop at \$240 to exit if the bearish thesis is invalidated. We aim to take profits at \$225, where we expect support to halt the price drop. We only allocate 20% of our capital to keep risk under control.
-      `,
-    );
-  }, []);
 
   const areSymbolsEmpty = stockSymbols.length === 0;
 
