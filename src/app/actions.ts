@@ -1,32 +1,9 @@
 'use server';
-import { dates } from '@/lib/utils';
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-
-export async function fetchStockData({ stockSymbols }: { stockSymbols: string[] }) {
-  try {
-    const stockData = await Promise.all(
-      stockSymbols.map(async (ticker) => {
-        const url = `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/1/day/${dates.startDate}/${dates.endDate}?apiKey=${process.env.POLYGON_API_KEY}`;
-        const response = await fetch(url);
-
-        if (response.status !== 200) {
-          console.error('Failed to fetch data for ticker', ticker);
-        }
-        const data = await response.text();
-
-        return data;
-      }),
-    );
-
-    return stockData.join('');
-  } catch (err) {
-    console.log(err);
-  }
-}
 
 export async function summarizeStockData({ ticker }: { ticker: string }) {
   const dataResponse = await fetch(
