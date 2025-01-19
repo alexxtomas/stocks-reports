@@ -81,6 +81,8 @@ export async function summarizeStockData({ stockSymbols }: { stockSymbols: strin
         },
       ],
       temperature: 0,
+      frequency_penalty: 0,
+      presence_penalty: 0,
     });
 
     const messageContent = response.choices[0].message.content;
