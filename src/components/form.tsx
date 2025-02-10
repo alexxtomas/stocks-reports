@@ -5,7 +5,7 @@ import { useState, useTransition } from 'react';
 import Markdown from 'react-markdown';
 import { ComboboxDemo } from './combobox';
 import { dates } from '@/lib/utils';
-import { NEXT_PUBLIC_OPENAI_WORKER_URL, NEXT_PUBLIC_POLYGON_WORKER_URL } from '@/lib/env';
+import { OPENAI_WORKER_URL, POLYGON_WORKER_URL } from '@/lib/constants';
 
 export const Form = () => {
   const [currStockSymbol, setCurrStockSymbol] = useState<string>('');
@@ -24,7 +24,7 @@ export const Form = () => {
 
     startTransition(async () => {
       const polygonResponse = await fetch(
-        `${NEXT_PUBLIC_POLYGON_WORKER_URL}?startDate=${dates.startDate}&endDate=${dates.endDate}&ticker=${currStockSymbol}`,
+        `${POLYGON_WORKER_URL}?startDate=${dates.startDate}&endDate=${dates.endDate}&ticker=${currStockSymbol}`,
         {
           method: 'GET',
           headers: {
@@ -38,7 +38,7 @@ export const Form = () => {
       }
       const polygonData = await polygonResponse.json();
 
-      const response = await fetch(NEXT_PUBLIC_OPENAI_WORKER_URL, {
+      const response = await fetch(OPENAI_WORKER_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
